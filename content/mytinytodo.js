@@ -488,7 +488,7 @@ var mytinytodo = window.mytinytodo = _mtt = {
                 }
             }
         });
-
+/*
         $('#tasklist').on('dblclick', '> li.task-row .task-middle, > li.task-row .task-note-block', function(){
             let id = parseInt(getLiTaskId(this));
             if (id) {
@@ -500,7 +500,7 @@ var mytinytodo = window.mytinytodo = _mtt = {
                 editTask(id);
             }
         });
-
+*/
         $('#tasklist').on('click', '.taskactionbtn', function(){
             var id = parseInt(getLiTaskId(this));
             if(id) taskContextMenu(this, id);

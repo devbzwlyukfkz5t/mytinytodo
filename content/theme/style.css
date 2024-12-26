@@ -774,6 +774,10 @@ li.task-row.task-completed .task-note-block .task-note { text-decoration:line-th
 .invisible { visibility:hidden; }
 .task-note a { color: var(--color-tasklist-note-link); }
 .task-note a:hover { color: var(--color-tasklist-link-hover) }
+.task-note td, th {
+    font-family: ui-monospace, Consolas, "SF Mono", Menlo, "Liberation Mono", monospace;
+    font-size: 1rem;
+}
 
 .task-prio { padding-left:2px; padding-right:2px; margin-left:0px; margin-right:5px; cursor:default; }
 .prio-neg { background-color:var(--color-priority-low); color: var(--color-priority-text); }
