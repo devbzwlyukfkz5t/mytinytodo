@@ -161,6 +161,7 @@ class TasksController extends ApiController {
                 $this->response->data = $this->newTaskInList($listId);
             }
         }
+        $this->sortAllTasks();
     }
 
     /**
@@ -785,6 +786,21 @@ class TasksController extends ApiController {
         }
     }
 
-
+    private function sortAllTasks()
+    {
+        $db = DBConnection::instance();
+        $q = $db->dq("SELECT id FROM {$db->prefix}todolist ORDER BY prio DESC, d_edited DESC");
+        $a = [];
+        while ($r = $q->fetchAssoc()) {
+            $a[] = (int)$r['id'];
+        }
+        $ow = 1;
+        $db->ex("BEGIN");
+        foreach ($a as $id) {
+            $db->dq("UPDATE {$db->prefix}todolist SET ow=?,d_edited=? WHERE id=?", array($ow, time(), $id));
+            $ow = $ow + 1;
+        }
+        $db->ex("COMMIT");
+    }
 
 }
