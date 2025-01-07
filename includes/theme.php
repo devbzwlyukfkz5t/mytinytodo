@@ -164,6 +164,11 @@ $().ready(function(){
 </div>
 <div class="form-row">
   <div class="h"><?php _e('note');?></div>
+  <div class="upload-file-main">
+    <div class="upload-file">
+      <input id="fileupload" type="file" name="files[]" data-url="/upload/" multiple>
+    </div>
+  </div>
   <textarea name="note" class="inmax form-input" spellcheck="false"></textarea>
 </div>
 <div class="form-row">
@@ -347,6 +352,50 @@ $().ready(function(){
     <?php do_action('theme_footer_content_end'); ?>
   </div>
 </div>
+
+<script type="text/javascript" src="<?php mttinfo('content_url'); ?>js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="<?php mttinfo('content_url'); ?>js/vendor/jquery.ui.widget.js"></script>
+
+<script>
+$("#fileupload").fileupload({
+  dataType: "json",
+  add: function(e, data) {
+    data.context = $('<p class="file"></p>')
+      .append($('<a id="attachment" target="_blank"></a>').text(data.files[0].name))
+      .append($('<a id="deletefile" target="_blank"></a>').text('DELETE'))
+      .appendTo(document.getElementsByClassName("upload-file-main")[0]);
+    data.submit();
+  },
+  progress: function(e, data) {
+    var progress = parseInt((data.loaded / data.total) * 100, 10);
+    data.context.css("background-position-x", 100 - progress + "%");
+  },
+  done: function(e, data) {
+    data.context.addClass("done");
+    data.context.find("a").each(function(index, element) {
+        if (index == 0) {
+            $(element).prop("href", data.result.files[0].url);
+        }
+        if (index == 1) {
+            $(element).attr("href", data.files[0].name);
+            $(element).attr("onclick", 'del_file("' + data.files[0].name + '");return false;');
+        }
+    });
+  }
+});
+function del_file(f) {
+    $.ajax({
+        url: $("#fileupload").attr('data-url') + 'index.php?file=' + f,
+        type: 'DELETE',
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+</script>
 
 </body>
 </html>
