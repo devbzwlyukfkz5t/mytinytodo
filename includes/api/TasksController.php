@@ -210,11 +210,11 @@ class TasksController extends ApiController {
 
         $action = $this->req->jsonBody['action'] ?? '';
         switch ($action) {
-            case 'edit':     $this->response->data = $this->editTask($id);     break;
+            case 'edit':     $this->response->data = $this->editTask($id); $this->sortAllTasks();     break;
             case 'complete': $this->response->data = $this->completeTask($id); break;
             case 'note':     $this->response->data = $this->editNote($id);     break;
             case 'move':     $this->response->data = $this->moveTask($id);     break;
-            case 'priority': $this->response->data = $this->priorityTask($id); break;
+            case 'priority': $this->response->data = $this->priorityTask($id); $this->sortAllTasks(); break;
             case 'delete':   $this->response->data = $this->deleteTask($id);   break; //compatibility
             default:         $this->response->data = ['total' => 0];
         }
