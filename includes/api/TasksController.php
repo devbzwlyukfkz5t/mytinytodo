@@ -400,6 +400,7 @@ class TasksController extends ApiController {
         $title = trim($this->req->jsonBody['title'] ?? '');
         $note = str_replace("\r\n", "\n", $this->req->jsonBody['note'] ?? '');
         $prio = (int)($this->req->jsonBody['prio'] ?? 0);
+        $prog = (int)($this->req->jsonBody['prog'] ?? 0);
         if ($prio < -1) $prio = -1;
         elseif ($prio > 2) $prio = 2;
         $duedate = MTTSmartSyntax::parseDuedate(trim( $this->req->jsonBody['duedate'] ?? '' ));
@@ -416,8 +417,8 @@ class TasksController extends ApiController {
         if ($aTags) {
             $this->addTaskTags($id, $aTags['ids'], $listId);
         }
-        $db->dq("UPDATE {$db->prefix}todolist SET title=?,note=?,prio=?,duedate=?,d_edited=? WHERE id=$id",
-                array($title, $note, $prio, $duedate, time()) );
+        $db->dq("UPDATE {$db->prefix}todolist SET title=?,note=?,prio=?,prog=?,duedate=?,d_edited=? WHERE id=$id",
+                array($title, $note, $prio, $prog, $duedate, time()) );
         $db->ex("COMMIT");
         $task = $this->getTaskRowById($id);
         MTTNotificationCenter::postNotification(MTTNotification::didEditTask, ['task' => $task]);
@@ -470,12 +471,14 @@ class TasksController extends ApiController {
     {
         $db = DBConnection::instance();
         $compl = (int)($this->req->jsonBody['compl'] ?? 0);
+        if ($compl) $prog = 10;
+        else $prog = 0;
         $listId = (int)$db->sq("SELECT list_id FROM {$db->prefix}todolist WHERE id=$id");
         if ($compl) $ow = 1 + (int)$db->sq("SELECT MAX(ow) FROM {$db->prefix}todolist WHERE list_id=$listId AND compl=1");
         else $ow = 1 + (int)$db->sq("SELECT MAX(ow) FROM {$db->prefix}todolist WHERE list_id=$listId AND compl=0");
         $date = time();
         $dateCompleted = $compl ? $date : 0;
-        $db->dq("UPDATE {$db->prefix}todolist SET compl=$compl,ow=$ow,d_completed=?,d_edited=? WHERE id=$id",
+        $db->dq("UPDATE {$db->prefix}todolist SET compl=$compl,prog=$prog,ow=$ow,d_completed=?,d_edited=? WHERE id=$id",
                     array($dateCompleted, $date) );
         $task = $this->getTaskRowById($id);
         MTTNotificationCenter::postNotification(MTTNotification::didCompleteTask, $task);
@@ -636,6 +639,7 @@ class TasksController extends ApiController {
             'dateCompletedFull' => htmlarray($dCompletedFull),
             'dateCompletedInlineTitle' => htmlarray(sprintf($lang->get('taskdate_inline_completed'), $dCompleted)),
             'compl' => (int)$r['compl'],
+            'prog' => $r['prog'],
             'prio' => $r['prio'],
             'note' => noteMarkup($r['note']),
             'noteText' => (string)$r['note'],

@@ -158,6 +158,15 @@ $().ready(function(){
   <span class="h"><?php _e('due');?> </span>
   <input name="duedate" id="duedate" value="" class="in100 form-input" title="Y-M-D, M/D/Y, D.M.Y, M/D, D.M" autocomplete="off" type="text">
 </div>
+<div class="form-row form-row-short">
+  <span class="h">Progress </span>
+    <select name="prog" class="form-input">
+    <option value="8">80%</option>
+    <option value="5">50%</option>
+    <option value="3">30%</option>
+    <option value="0" selected="selected">0</option>
+  </select>
+</div>
 <div class="form-row">
   <div class="h"><?php _e('task');?></div>
   <input type="text" name="task" value="" class="inmax form-input" maxlength="250" autocomplete="off">

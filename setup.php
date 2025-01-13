@@ -293,6 +293,7 @@ function createMysqlTables(Database_Abstract $db)
     `d_completed` INT UNSIGNED NOT NULL default 0, /* time() timestamp */
     `d_edited` INT UNSIGNED NOT NULL default 0,    /* time() timestamp */
     `compl` TINYINT UNSIGNED NOT NULL default 0,
+    `prog` TINYINT UNSIGNED NOT NULL default 0,
     `title` VARCHAR(250) NOT NULL,
     `note` TEXT,
     `prio` TINYINT NOT NULL default 0,          /* priority -,0,+ */
@@ -370,6 +371,7 @@ function createPostgresTables(Database_Abstract $db)
     d_completed INTEGER NOT NULL default 0,
     d_edited INTEGER NOT NULL default 0,
     compl SMALLINT NOT NULL default 0,
+    prog SMALLINT NOT NULL default 0,
     title VARCHAR(250) NOT NULL default '',
     note TEXT default NULL,
     prio SMALLINT NOT NULL default 0,
@@ -442,6 +444,7 @@ function createSqliteTables(Database_Abstract $db)
     d_completed INTEGER UNSIGNED NOT NULL default 0,
     d_edited INTEGER UNSIGNED NOT NULL default 0,
     compl TINYINT UNSIGNED NOT NULL default 0,
+    prog TINYINT UNSIGNED NOT NULL default 0,
     title VARCHAR(250) NOT NULL default '' COLLATE UTF8CI,
     note TEXT COLLATE UTF8CI default NULL,
     prio TINYINT NOT NULL default 0,
@@ -799,6 +802,7 @@ function update_17_18(Database_Abstract $db, $dbtype)
                 d_completed INTEGER UNSIGNED NOT NULL default 0,
                 d_edited INTEGER UNSIGNED NOT NULL default 0,
                 compl TINYINT UNSIGNED NOT NULL default 0,
+                prog TINYINT UNSIGNED NOT NULL default 0,
                 title VARCHAR(250) NOT NULL default '' COLLATE UTF8CI,
                 note TEXT COLLATE UTF8CI default NULL,
                 prio TINYINT NOT NULL default 0,

@@ -108,6 +108,7 @@ MytinytodoAjaxApi.prototype = {
                 title: params.title,
                 note: params.note,
                 prio: params.prio,
+                prog: params.prog,
                 tags: params.tags,
                 duedate: params.duedate,
             }),

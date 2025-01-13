@@ -1220,7 +1220,7 @@ function prepareTaskBlocks(item)
         '<div class="task-block">' +
             '<div class="task-left">' +
                 '<div class="task-toggle"></div>' +
-                '<label><input type="checkbox" '+(flag.readOnly?'disabled="disabled"':'')+(item.compl?'checked="checked"':'')+'></label>' +
+                '<label><input type="checkbox" value=' + item.prog + ' '+(flag.readOnly?'disabled="disabled"':'')+(item.compl?'checked="checked"':'')+'></label>' +
             "</div>\n" +
 
             '<div class="task-middle">' +
@@ -1824,6 +1824,7 @@ function editTask(id)
     form.tags.value = dehtml(item.tags).split(',').join(', ');
     form.duedate.value = item.duedate;
     form.prio.value = item.prio;
+    form.prog.value = item.prog;
     $('#taskedit_id').text('#' + item.id);
     $('#taskedit_info .date-created-value').text(item.date).attr('title', item.dateFull);;
     if (item.isEdited && !item.compl) {
@@ -1853,6 +1854,7 @@ function clearEditForm()
     form.tags.value = '';
     form.duedate.value = '';
     form.prio.value = '0';
+    form.prog.value = '0';
     form.id.value = '';
     toggleEditAllTags(0);
 };
@@ -1864,6 +1866,7 @@ function showEditForm(isAdd)
     {
         clearEditForm();
         $('#page_taskedit').removeClass('mtt-inedit').addClass('mtt-inadd');
+        $('#prog').prop('disabled', 'disabled');
         form.isadd.value = 1;
         if (_mtt.options.autotag) form.tags.value = _mtt.filter.getTags();
         if ($('#task').val() != '')
@@ -1881,6 +1884,11 @@ function showEditForm(isAdd)
     }
     else {
         $('#page_taskedit').removeClass('mtt-inadd').addClass('mtt-inedit');
+        if (form.prog.value == 10) {
+            $('#prog').prop('disabled', 'disabled');
+        } else {
+            $('#prog').prop('disabled', false);
+        }
         form.isadd.value = 0;
     }
     $(document).on('keydown.mttback', function(event) {
@@ -1902,7 +1910,7 @@ function saveTask(form)
         return submitFullTask(form);
 
     _mtt.db.request('editTask', {id:form.id.value, title: form.task.value, note:form.note.value,
-        prio:form.prio.value, tags:form.tags.value, duedate:form.duedate.value},
+        prio:form.prio.value, prog:form.prog.value, tags:form.tags.value, duedate:form.duedate.value},
         function(json) {
             if (!parseInt(json.total))
                 return;
