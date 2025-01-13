@@ -160,7 +160,8 @@ $().ready(function(){
 </div>
 <div class="form-row form-row-short">
   <span class="h">Progress </span>
-    <select name="prog" class="form-input">
+    <select name="prog" id="prog" class="form-input">
+    <option value="10">100%</option>
     <option value="8">80%</option>
     <option value="5">50%</option>
     <option value="3">30%</option>
@@ -404,6 +405,18 @@ function del_file(f) {
         }
     });
 }
+</script>
+
+<script type="text/javascript">
+setTimeout(function() {
+  let elements = document.getElementsByTagName("input");
+  for (let i = 0; i < elements.length; i++) {
+    let v = parseInt(elements[i].getAttribute('value'));
+    if (v > 0 && v < 10) {
+      elements[i].indeterminate = true;
+    }
+  }
+}, 500);
 </script>
 
 </body>
