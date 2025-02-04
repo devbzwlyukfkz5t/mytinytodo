@@ -774,7 +774,7 @@ li.task-row.task-completed .task-note-block .task-note { text-decoration:line-th
 .invisible { visibility:hidden; }
 .task-note a { color: var(--color-tasklist-note-link); }
 .task-note a:hover { color: var(--color-tasklist-link-hover) }
-.task-note td, th {
+.task-note td, th, li {
     font-family: ui-monospace, Consolas, "SF Mono", Menlo, "Liberation Mono", monospace;
     font-size: 1rem;
 }
